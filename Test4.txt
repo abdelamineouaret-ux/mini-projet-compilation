@@ -1,0 +1,90 @@
+int calculer(int a, int b) {
+    int resultat;
+    
+    switch (a) {
+        case 0:
+            resultat = b;
+            break;
+        
+        case 1:
+            resultat = a + b;
+            break;
+        
+        case 2:
+            resultat = a * b;
+            break;
+        
+        default:
+            resultat = a - b;
+            break;
+    }
+    
+    return resultat;
+}
+
+int main() {
+    // Déclarations
+    int x, y, z;
+    float prix, total;
+    char grade;
+    
+    // Affectations simples
+    x = 10;
+    y = 20;
+    z = 0;
+    
+    // Affectations composées
+    x += 5;
+    y -= 3;
+    z *= 2;
+    
+    // Expressions arithmétiques
+    z = (x + y) * 2 - 10 / 5;
+    
+    // Expressions de comparaison
+    int resultat;
+    resultat = (x > y) || (z < 100);
+    resultat = (x == 15) && (y != 0);
+    
+    // Incrémentation/Décrémentation
+    x++;
+    ++x;
+    y--;
+    --y;
+    
+    // Switch/case principal
+    switch (x) {
+        case 10:
+            grade = 'A';
+            prix = 100.0;
+            break;
+        
+        case 15:
+            grade = 'B';
+            prix = 85.5;
+            total = prix * 1.2;
+            break;
+        
+        case 20:
+            grade = 'C';
+            prix = 70.0;
+            {
+                int reduction;
+                reduction = 10;
+                prix = prix - reduction;
+            }
+            break;
+        
+        default:
+            grade = 'F';
+            prix = 0.0;
+            break;
+    }
+    
+    // Test avec mots-clés personnalisés
+    int ouaret, abdelamine;
+    ouaret = 42;
+    abdelamine = ouaret + 8;
+    
+    return 0;
+}

@@ -1,0 +1,32 @@
+int main() {
+    int x;
+    int y
+    
+    // Erreur: point-virgule manquant ci-dessus
+    
+    x = 10;
+    
+    // Erreur: switch sans parenthèses
+    switch x {
+        case 1:
+            y = 5;
+            break;
+        
+        case 2
+            // Erreur: deux-points manquant ci-dessus
+            y = 10;
+            break;
+    }
+    
+    // Erreur: accolade fermante manquante pour case
+    switch (y) {
+        case 5:
+            x = x + 1;
+            // break manquant (warning mais pas erreur syntaxique)
+        
+        default:
+            x = 0;
+    // Erreur: accolade manquante
+    
+    return 0;
+}

@@ -1,0 +1,19 @@
+int main() {
+    int nombre;
+    char lettre;
+    
+    // Erreur: caractère non terminé
+    lettre = 'A;
+    
+    // Erreur: chaîne non terminée
+    char message = "Bonjour ouaret;
+    
+    // Erreur: caractère invalide
+    nombre = 42 @ 10;
+    
+    // Correct
+    nombre = 100;
+    lettre = 'B';
+    
+    return 0;
+}

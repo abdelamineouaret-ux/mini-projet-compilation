@@ -1,0 +1,47 @@
+int main() {
+    int choix;
+    int resultat;
+    float prix;
+    char ouaret;
+    
+    // Affectations
+    choix = 2;
+    resultat = 0;
+    prix = 19.99;
+    
+    // Test switch/case
+    switch (choix) {
+        case 1:
+            resultat = 10 + 5;
+            prix = prix * 2;
+            break;
+        
+        case 2:
+            resultat = 20 - 3;
+            prix = prix / 2;
+            abdelamine = 'A';
+            break;
+        
+        case 3:
+            resultat = 5 * 4;
+            if (resultat > 15) {
+                resultat++;
+            }
+            break;
+        
+        default:
+            resultat = 0;
+            prix = 0.0;
+            break;
+    }
+    
+    // Incrémentation et décrémentation
+    resultat++;
+    --resultat;
+    
+    // Expressions logiques et arithmétiques
+    int test;
+    test = (resultat > 10) && (prix < 100.0);
+    
+    return 0;
+}
