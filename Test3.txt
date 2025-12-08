@@ -1,3 +1,5 @@
+/* Test avec erreurs syntaxiques */
+
 int main() {
     int x;
     int y
@@ -17,16 +19,6 @@ int main() {
             y = 10;
             break;
     }
-    
-    // Erreur: accolade fermante manquante pour case
-    switch (y) {
-        case 5:
-            x = x + 1;
-            // break manquant (warning mais pas erreur syntaxique)
-        
-        default:
-            x = 0;
-    // Erreur: accolade manquante
     
     return 0;
 }
