@@ -5,8 +5,8 @@ int main() {
     // Erreur: caractère non terminé
     lettre = 'A;
     
-    // Erreur: chaîne non terminée
-    char message = "Bonjour ouaret;
+    // Erreur: identificateur commence par un chiffre
+    int 9variable;
     
     // Erreur: caractère invalide
     nombre = 42 @ 10;
