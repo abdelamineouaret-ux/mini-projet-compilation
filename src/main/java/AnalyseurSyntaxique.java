@@ -32,19 +32,99 @@ public class AnalyseurSyntaxique {
         }
     }
     
-    // Programme ::= {Declaration | Instruction}
+    // Programme ::= {Declaration | Fonction}
     private void programme() {
         while (tokenCourant.getType() != TypeToken.FIN_FICHIER) {
             if (estTypeDeclaration()) {
-                declaration();
+                // Regarder si c'est une fonction ou une déclaration
+                int savePosition = position;
+                Token saveToken = tokenCourant;
+                
+                avancer(); // Passer le type
+                
+                if (tokenCourant.getType() == TypeToken.IDENTIFICATEUR) {
+                    avancer();
+                    
+                    // Si '(' alors c'est une fonction
+                    if (tokenCourant.getType() == TypeToken.PARENTHESE_OUVRANTE) {
+                        // Revenir en arrière et analyser comme fonction
+                        position = savePosition;
+                        tokenCourant = saveToken;
+                        fonction();
+                    } else {
+                        // Revenir en arrière et analyser comme déclaration
+                        position = savePosition;
+                        tokenCourant = saveToken;
+                        declarationVariable();
+                    }
+                } else {
+                    position = savePosition;
+                    tokenCourant = saveToken;
+                    declarationVariable();
+                }
             } else {
                 instruction();
             }
         }
     }
     
-    // Declaration ::= Type Identificateur [Affectation] ;
-    private void declaration() {
+    // Fonction ::= Type Identificateur ( [Parametres] ) Bloc
+    private void fonction() {
+        type();
+        
+        if (!accepter(TypeToken.IDENTIFICATEUR)) {
+            ajouterErreur("Identificateur attendu pour le nom de la fonction");
+            recuperer();
+            return;
+        }
+        
+        if (!accepter(TypeToken.PARENTHESE_OUVRANTE)) {
+            ajouterErreur("'(' attendu après le nom de la fonction");
+            recuperer();
+            return;
+        }
+        
+        // Paramètres optionnels
+        if (tokenCourant.getType() != TypeToken.PARENTHESE_FERMANTE) {
+            parametres();
+        }
+        
+        if (!accepter(TypeToken.PARENTHESE_FERMANTE)) {
+            ajouterErreur("')' attendu après les paramètres");
+            recuperer();
+        }
+        
+        // Corps de la fonction (bloc)
+        if (tokenCourant.getType() == TypeToken.ACCOLADE_OUVRANTE) {
+            bloc();
+        } else {
+            ajouterErreur("Bloc attendu pour le corps de la fonction");
+            recuperer();
+        }
+    }
+    
+    // Parametres ::= Type Identificateur { , Type Identificateur }
+    private void parametres() {
+        type();
+        
+        if (!accepter(TypeToken.IDENTIFICATEUR)) {
+            ajouterErreur("Identificateur attendu pour le paramètre");
+            return;
+        }
+        
+        while (tokenCourant.getType() == TypeToken.VIRGULE) {
+            avancer();
+            type();
+            
+            if (!accepter(TypeToken.IDENTIFICATEUR)) {
+                ajouterErreur("Identificateur attendu après la virgule");
+                return;
+            }
+        }
+    }
+    
+    // DeclarationVariable ::= Type Identificateur [Affectation] { , Identificateur [Affectation] } ;
+    private void declarationVariable() {
         type();
         
         if (!accepter(TypeToken.IDENTIFICATEUR)) {
@@ -57,6 +137,23 @@ public class AnalyseurSyntaxique {
         if (tokenCourant.getType() == TypeToken.AFFECTATION) {
             avancer();
             expression();
+        }
+        
+        // Déclarations multiples (ex: int x, y, z;)
+        while (tokenCourant.getType() == TypeToken.VIRGULE) {
+            avancer();
+            
+            if (!accepter(TypeToken.IDENTIFICATEUR)) {
+                ajouterErreur("Identificateur attendu après la virgule");
+                recuperer();
+                return;
+            }
+            
+            // Affectation optionnelle
+            if (tokenCourant.getType() == TypeToken.AFFECTATION) {
+                avancer();
+                expression();
+            }
         }
         
         if (!accepter(TypeToken.POINT_VIRGULE)) {
@@ -239,7 +336,7 @@ public class AnalyseurSyntaxique {
         }
     }
     
-    // Bloc ::= { {Instruction} }
+    // Bloc ::= { {Declaration | Instruction} }
     private void bloc() {
         if (!accepter(TypeToken.ACCOLADE_OUVRANTE)) {
             ajouterErreur("'{' attendu");
@@ -249,7 +346,7 @@ public class AnalyseurSyntaxique {
         while (tokenCourant.getType() != TypeToken.ACCOLADE_FERMANTE &&
                tokenCourant.getType() != TypeToken.FIN_FICHIER) {
             if (estTypeDeclaration()) {
-                declaration();
+                declarationVariable();
             } else {
                 instruction();
             }

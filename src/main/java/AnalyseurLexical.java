@@ -69,6 +69,15 @@ public class AnalyseurLexical {
     private Token lireIdentificateurOuMotCle(int ligneDeb, int colonneDeb) {
         StringBuilder sb = new StringBuilder();
         
+        // Le premier caractère doit être une lettre ou '_'
+        char premierCar = codeSource.charAt(position);
+        if (!estLettre(premierCar) && premierCar != '_') {
+            erreurs.add("Erreur ligne " + ligneDeb + ", col " + colonneDeb + 
+                       ": Un identificateur ne peut pas commencer par '" + premierCar + "'");
+            avancer();
+            return new Token(TypeToken.ERREUR, String.valueOf(premierCar), ligneDeb, colonneDeb);
+        }
+        
         while (position < codeSource.length()) {
             char c = codeSource.charAt(position);
             if (estLettre(c) || estChiffre(c) || c == '_') {
