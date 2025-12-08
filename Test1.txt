@@ -19,14 +19,11 @@ int main() {
         case 2:
             resultat = 20 - 3;
             prix = prix / 2;
-            abdelamine = 'A';
+            ouaret = 'A';
             break;
         
         case 3:
             resultat = 5 * 4;
-            if (resultat > 15) {
-                resultat++;
-            }
             break;
         
         default:
@@ -38,10 +35,6 @@ int main() {
     // Incrémentation et décrémentation
     resultat++;
     --resultat;
-    
-    // Expressions logiques et arithmétiques
-    int test;
-    test = (resultat > 10) && (prix < 100.0);
     
     return 0;
 }
